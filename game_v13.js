@@ -273,12 +273,7 @@ setupTouchControls(){
   if(this.powerTimers.rapid && this.powerTimers.rapid>now) active.push(this.powerEmoji.rapid);
   if(this.powerTimers.spread && this.powerTimers.spread>now) active.push(this.powerEmoji.spread);
   if(this.powerTimers.speed && this.powerTimers.speed>now) active.push(this.powerEmoji.speed);
-  if(active.length){
-    this.ctx.textAlign='center';
-    this.ctx.font='24px Arial';
-    this.ctx.fillText(active.join(' '), this.canvas.width/2, 52);
-  }
-    const img=cfg.imgObj; if(this.imgReady(img)){ const h=this.hudHeight-14, ratio=img.naturalWidth/img.naturalHeight, w=h*ratio, x=(this.canvas.width-w)/2, y=12; this.ctx.drawImage(img,x,y,w,h); this.ctx.strokeStyle='#fff'; this.ctx.strokeRect(x,y,w,h);} this.ctx.textAlign='left'; }
+  const img=cfg.imgObj; if(this.imgReady(img)){ const h=this.hudHeight-14, ratio=img.naturalWidth/img.naturalHeight, w=h*ratio, x=(this.canvas.width-w)/2, y=12; this.ctx.drawImage(img,x,y,w,h); this.ctx.strokeStyle='#fff'; this.ctx.strokeRect(x,y,w,h);} this.ctx.textAlign='left'; }
   drawEntities(ts){ const time=ts||performance.now();
     if(this.imgReady(this.playerImg)) this.ctx.drawImage(this.playerImg,this.player.x,this.player.y,this.player.width,this.player.height); else { this.ctx.fillStyle='#0f0'; this.ctx.fillRect(this.player.x,this.player.y,this.player.width,this.player.height);} if(this.player.lives<3) this.drawCracks(this.player.x,this.player.y,this.player.width,this.player.height,3-this.player.lives);
     this.ctx.fillStyle='#fff'; this.playerBullets.forEach(b=>this.ctx.fillRect(b.x,b.y,4,12)); this.ctx.fillStyle='#ff0'; this.enemyBullets.forEach(b=>this.ctx.fillRect(b.x,b.y,4,12));
