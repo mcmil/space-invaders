@@ -24,3 +24,13 @@ body {
     font-family: Arial, sans-serif;
     font-size: 24px;
 }
+
+/* Responsive game container and canvas */
+body,html{height:100%;margin:0;padding:0;display:flex;justify-content:center;align-items:center;background:#000;color:#fff;}
+.game-container{position:relative;width:100vw;max-width:800px;height:100vh;max-height:600px;}
+#gameCanvas{width:100%;height:100%;display:block;background:#000;image-rendering:pixelated;}
+
+/* Touch controls (shown on touch devices) */
+.touch-controls{display:none;position:absolute;bottom:12px;left:50%;transform:translateX(-50%);width:90%;text-align:center;}
+.touch-controls button{font-size:28px;padding:12px 20px;margin:0 10px;border:none;border-radius:8px;background:#d48b07;color:#fff;}
+@media (hover:none){.touch-controls{display:block;}}

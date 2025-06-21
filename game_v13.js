@@ -50,6 +50,7 @@ class MenelInvaders {
 
     /* Controls */
     this.leftPressed=false; this.rightPressed=false; this.setupControls();
+    this.setupTouchControls();
 
     this.loadLevel(0);
     requestAnimationFrame(ts=>this.loop(ts));
@@ -103,7 +104,25 @@ class MenelInvaders {
       this.ensureAudio();
     });
     window.addEventListener('keyup',e=>{const k=e.key; if(['ArrowLeft','a','A'].includes(k)) this.leftPressed=false; if(['ArrowRight','d','D'].includes(k)) this.rightPressed=false;});
-  }
+}
+
+/* === touch controls (mobile) === */
+setupTouchControls(){
+  const btnLeft=document.getElementById('btnLeft');
+  const btnRight=document.getElementById('btnRight');
+  const btnShoot=document.getElementById('btnShoot');
+  if(!btnLeft) return; // desktop
+  const add=(el,evt,fn)=>el&&el.addEventListener(evt,fn,{passive:false});
+  // Helpers
+  add(btnLeft,'touchstart',e=>{e.preventDefault();this.leftPressed=true;});
+  add(btnLeft,'touchend',e=>{e.preventDefault();this.leftPressed=false;});
+  add(btnRight,'touchstart',e=>{e.preventDefault();this.rightPressed=true;});
+  add(btnRight,'touchend',e=>{e.preventDefault();this.rightPressed=false;});
+  add(btnShoot,'touchstart',e=>{e.preventDefault();
+    if(this.state==='playing') this.tryShoot();
+    else if(this.state==='start') { this.score=0; this.loadLevel(this.selectedLevel); this.state='playing'; this.playSound('playerShoot'); }
+  });
+}
 
   /* === Level & patterns (same as v12) === */
   resetPlayer(){ this.player.lives=3; this.player.velX=0; this.shootCooldown=this.shootCooldownBase; this.spreadFire=false; }
@@ -245,8 +264,8 @@ class MenelInvaders {
     this.ctx.font='bold 18px Arial'; this.ctx.fillText('Lives:',10,y1);
     this.ctx.font='18px Arial'; this.ctx.fillText(this.player.lives,70,y1);
     this.ctx.textAlign='right';
-    this.ctx.font='bold 18px Arial'; this.ctx.fillText('HS:',this.canvas.width-180,30);
-    this.ctx.font='18px Arial'; this.ctx.fillText(this.getHighScore(this.currentLevel),this.canvas.width-120,30);
+    this.ctx.font='bold 18px Arial'; this.ctx.fillText('HS:',this.canvas.width-220,30);
+    this.ctx.font='18px Arial'; this.ctx.fillText(this.getHighScore(this.currentLevel),this.canvas.width-170,30);
     this.ctx.font='bold 18px Arial'; this.ctx.fillText('Score:',this.canvas.width-70,30);
     this.ctx.font='18px Arial'; this.ctx.fillText(this.score,this.canvas.width-10,30);
   // Active power-ups center of HUD
@@ -257,7 +276,7 @@ class MenelInvaders {
   if(active.length){
     this.ctx.textAlign='center';
     this.ctx.font='24px Arial';
-    this.ctx.fillText(active.join(' '), this.canvas.width/2, 32);
+    this.ctx.fillText(active.join(' '), this.canvas.width/2, 52);
   }
     const img=cfg.imgObj; if(this.imgReady(img)){ const h=this.hudHeight-14, ratio=img.naturalWidth/img.naturalHeight, w=h*ratio, x=(this.canvas.width-w)/2, y=12; this.ctx.drawImage(img,x,y,w,h); this.ctx.strokeStyle='#fff'; this.ctx.strokeRect(x,y,w,h);} this.ctx.textAlign='left'; }
   drawEntities(ts){ const time=ts||performance.now();
